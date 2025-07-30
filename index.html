@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>GRANDEN – Poistenie</title>
+  <title>GRANDEN – AI Asistent</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
@@ -37,7 +37,7 @@
     }
 
     #chatbot-header {
-      background: linear-gradient(135deg, #0f7d57, #00b894);
+      background: linear-gradient(135deg, #8b0000, #ff1e56);
       color: white;
       padding: 7px 20px;
       cursor: pointer;
@@ -65,7 +65,7 @@
       padding: 16px;
       display: flex;
       flex-direction: column;
-      background: #fafafa;
+      background: #f9f9f9;
       height: 450px;
       justify-content: space-between;
       box-sizing: border-box;
@@ -91,8 +91,8 @@
 
     .message.user {
       align-self: flex-end;
-      background: #d1f7ec;
-      color: #1a3e2d;
+      background: #ffe3e8;
+      color: #7c0a0a;
     }
 
     .message.bot {
@@ -122,7 +122,7 @@
     }
 
     button {
-      background: linear-gradient(to right, #00b894, #0f7d57);
+      background: linear-gradient(to right, #ff1e56, #8b0000);
       color: white;
       border: none;
       border-radius: 12px;
@@ -135,25 +135,27 @@
     }
 
     button:hover {
-      background: linear-gradient(to right, #0f7d57, #00b894);
+      background: linear-gradient(to right, #8b0000, #ff1e56);
     }
   </style>
 </head>
 <body>
   <div id="chatbot-container" class="closed">
-    <div id="chatbot-header" onclick="toggleChatbot()">🛡️ GRANDEN AI <span id="toggle-icon">+</span></div>
+    <div id="chatbot-header" onclick="toggleChatbot()">🤖 GRANDEN Bot <span id="toggle-icon">+</span></div>
     <div id="chatbot-body">
       <div id="chat-messages">
         <div class="message bot">
-          <strong>GRANDEN:</strong> Dobrý deň! Som váš virtuálny poradca pre poistenie 🛡️. Pomôžem vám s poistením majetku, áut či podnikania. Ako vám môžem pomôcť?
+          <strong>GRANDEN:</strong> Vítaj! Som GRANDEN AI, tvoj osobný digitálny pomocník. Ako ti dnes môžem pomôcť? 🔥
         </div>
       </div>
       <div id="input-area">
-        <textarea id="user-input" placeholder="Napíšte svoju otázku ohľadom poistenia..."></textarea>
+        <textarea id="user-input" placeholder="Napíš mi otázku..."></textarea>
         <button onclick="sendMessage()">Odoslať správu</button>
       </div>
     </div>
   </div>
+
+
 
 
   
