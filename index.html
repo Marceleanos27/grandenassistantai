@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>George – Realitný Maklér</title>
+  <title>GRANDEN – Poistenie</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
@@ -11,7 +11,6 @@
       margin: 0;
       padding: 0;
       font-family: 'Poppins', sans-serif;
-      
     }
 
     #chatbot-container {
@@ -62,20 +61,16 @@
       display: none;
     }
 
-    /* MAIN BODY */
     #chatbot-body {
       padding: 16px;
       display: flex;
       flex-direction: column;
       background: #fafafa;
       height: 450px;
-
-      /* new flex properties */
       justify-content: space-between;
       box-sizing: border-box;
     }
 
-    /* CHAT MESSAGES */
     #chat-messages {
       flex-grow: 1;
       overflow-y: auto;
@@ -83,7 +78,6 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
-      /* prevent input area shifting */
       margin-bottom: 8px;
     }
 
@@ -107,16 +101,11 @@
       color: #333;
     }
 
-    /* INPUT AREA FIXED AT BOTTOM */
     #input-area {
       display: flex;
       flex-direction: column;
       gap: 8px;
-
-      /* Important: no margin top */
       margin-top: 0;
-
-      /* prevent shrinking */
       flex-shrink: 0;
     }
 
@@ -152,19 +141,20 @@
 </head>
 <body>
   <div id="chatbot-container" class="closed">
-    <div id="chatbot-header" onclick="toggleChatbot()">✨ George AI <span id="toggle-icon">+</span></div>
+    <div id="chatbot-header" onclick="toggleChatbot()">🛡️ GRANDEN AI <span id="toggle-icon">+</span></div>
     <div id="chatbot-body">
       <div id="chat-messages">
         <div class="message bot">
-          <strong>George:</strong> Ahoj! Volám sa George, som tvoj virtuálny realitný maklér 🏡. Pomôžem ti s predajom, prenájmom alebo kúpou nehnuteľnosti. Ako ti môžem pomôcť?
+          <strong>GRANDEN:</strong> Dobrý deň! Som váš virtuálny poradca pre poistenie 🛡️. Pomôžem vám s poistením majetku, áut či podnikania. Ako vám môžem pomôcť?
         </div>
       </div>
       <div id="input-area">
-        <textarea id="user-input" placeholder="Napíš mi otázku ohľadom nehnuteľností..."></textarea>
+        <textarea id="user-input" placeholder="Napíšte svoju otázku ohľadom poistenia..."></textarea>
         <button onclick="sendMessage()">Odoslať správu</button>
       </div>
     </div>
   </div>
+
 
   
 
