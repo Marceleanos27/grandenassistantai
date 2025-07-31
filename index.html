@@ -206,42 +206,54 @@ let localReply = null;
 
 // --- LOKÁLNE ODPOVEDE Z database.js ---
 // --- LOKÁLNE ODPOVEDE Z database.js ---
-if (lowerMessage.includes("cena") || lowerMessage.includes("koľko stojí")) {
+// --- LOKÁLNE ODPOVEDE Z database.js (rozšírené varianty) ---
+if (
+  lowerMessage.includes("cena") ||
+  lowerMessage.includes("koľko stojí") ||
+  lowerMessage.includes("aká je cena") ||
+  lowerMessage.includes("cenník") ||
+  lowerMessage.includes("ceny")
+) {
   const sluzby = window.grandenData.sluzby
     .map(s => `• ${s.nazov}: ${s.cena}`)
     .join("\n");
-  localReply = `Naše služby:\n${sluzby}`;
+  localReply = `Naše služby a ich ceny:\n${sluzby}`;
 
 } else if (
   lowerMessage.includes("kontakt") ||
   lowerMessage.includes("telefón") ||
   lowerMessage.includes("telefon") ||
-  lowerMessage.includes("tvoje telefónne číslo") ||
-  lowerMessage.includes("tvoje číslo")
+  lowerMessage.includes("tvoje číslo") ||
+  lowerMessage.includes("tvoj kontakt") ||
+  lowerMessage.includes("email") ||
+  lowerMessage.includes("e-mail")
 ) {
   const k = window.grandenData.kontakty;
-  localReply = `Kontakt:\n📞 ${k.telefon}\n📧 ${k.email}\n🌐 ${k.web}`;
+  localReply = `Kontakt na nás:\n📞 ${k.telefon}\n📧 ${k.email}\n🌐 ${k.web}`;
 
 } else if (
   lowerMessage.includes("adresa") ||
   lowerMessage.includes("kde ste") ||
   lowerMessage.includes("sídli") ||
-  lowerMessage.includes("kde sa nachádza")
+  lowerMessage.includes("kde sa nachádza") ||
+  lowerMessage.includes("lokácia")
 ) {
-  localReply = `Sídlime na:\n${window.grandenData.sidlo}`;
+  localReply = `Naša adresa je:\n${window.grandenData.sidlo}`;
 
 } else if (
   lowerMessage.includes("založená") ||
   lowerMessage.includes("zalozena") ||
   lowerMessage.includes("kedy vznikla") ||
-  lowerMessage.includes("rok vzniku")
+  lowerMessage.includes("rok vzniku") ||
+  lowerMessage.includes("história firmy")
 ) {
-  localReply = `Granden bola založená v roku ${window.grandenData.zalozena}.`;
+  localReply = `Firma Granden bola založená v roku ${window.grandenData.zalozena}.`;
 
 } else if (
   lowerMessage.includes("zakladateľ") ||
   lowerMessage.includes("zakladatel") ||
-  lowerMessage.includes("kto založil")
+  lowerMessage.includes("kto založil") ||
+  lowerMessage.includes("founder")
 ) {
   localReply = `Zakladatelia: ${window.grandenData.zakladatelia.join(", ")}.`;
 
@@ -249,7 +261,8 @@ if (lowerMessage.includes("cena") || lowerMessage.includes("koľko stojí")) {
   lowerMessage.includes("pobočka") ||
   lowerMessage.includes("pobocka") ||
   lowerMessage.includes("najbližšia pobočka") ||
-  lowerMessage.includes("predajna")
+  lowerMessage.includes("predajna") ||
+  lowerMessage.includes("pobočky")
 ) {
   const p = window.grandenData.pobočky
     .map(x => `• ${x.mesto}: ${x.adresa}`)
@@ -259,37 +272,66 @@ if (lowerMessage.includes("cena") || lowerMessage.includes("koľko stojí")) {
 } else if (
   lowerMessage.includes("pracovné hodiny") ||
   lowerMessage.includes("otvorené") ||
-  lowerMessage.includes("otvorene") ||
-  lowerMessage.includes("kedy mate otvorene") ||
   lowerMessage.includes("kedy môžem prísť") ||
-  lowerMessage.includes("otváracie hodiny")
+  lowerMessage.includes("otváracie hodiny") ||
+  lowerMessage.includes("kedy máte otvorené")
 ) {
   const h = window.grandenData.pracovne_hodiny;
-  localReply = Object
-    .entries(h)
-    .map(([den, cas]) => `${den.charAt(0).toUpperCase()+den.slice(1)}: ${cas}`)
-    .join("\n");
+  localReply = "Pracovné hodiny:\n" +
+    Object.entries(h)
+      .map(([den, cas]) => `${den.charAt(0).toUpperCase()+den.slice(1)}: ${cas}`)
+      .join("\n");
 
 } else if (
   lowerMessage.includes("partner") ||
   lowerMessage.includes("spolupráca") ||
-  lowerMessage.includes("partneri")
+  lowerMessage.includes("partneri") ||
+  lowerMessage.includes("s kým spolupracujete")
 ) {
-  localReply = `Partneri:\n• ${window.grandenData.partnerstvá.join("\n• ")}`;
+  localReply = `Naši partneri:\n• ${window.grandenData.partnerstvá.join("\n• ")}`;
 
 } else if (
   lowerMessage.includes("popis") ||
   lowerMessage.includes("čo robí") ||
   lowerMessage.includes("zaoberá") ||
-  lowerMessage.includes("funkcia")
+  lowerMessage.includes("profil firmy")
 ) {
   localReply = window.grandenData.popis;
 
 } else if (
-  lowerMessage.includes("filozofi") ||
-  lowerMessage.includes("vízia")
+  lowerMessage.includes("filozofia") ||
+  lowerMessage.includes("vízia") ||
+  lowerMessage.includes("hodnoty") ||
+  lowerMessage.includes("poslanie")
 ) {
   localReply = window.grandenData.filozofia;
+
+} else if (
+  lowerMessage.includes("udržateľnosť") ||
+  lowerMessage.includes("udrzatelnost") ||
+  lowerMessage.includes("ekologické") ||
+  lowerMessage.includes("zelené iniciatívy")
+) {
+  const u = window.grandenData.udrzatelnost || window.grandenData["udržateľnosť"];
+  localReply = `Opatrenia udržateľnosti:\n• ${u.opatrenia.join("\n• ")}`;
+
+} else if (
+  lowerMessage.includes("počet zamestnancov") ||
+  lowerMessage.includes("zamestnancov") ||
+  lowerMessage.includes("koľko vás je")
+) {
+  localReply = `Momentálne máme ${window.grandenData.pocet_zamestnancov} zamestnancov.`;
+
+} else if (
+  lowerMessage.includes("r&d") ||
+  lowerMessage.includes("výskum") ||
+  lowerMessage.includes("vývoj") ||
+  lowerMessage.includes("r and d")
+) {
+  localReply = window.grandenData.r_and_d
+    ? "Áno, máme interné oddelenie výskumu a vývoja."
+    : "Nie, zameriavame sa na sprostredkovateľskú činnosť, nemáme samostatné R&D.";
+
 }
 
 if (localReply) {
@@ -299,6 +341,7 @@ if (localReply) {
   return;
 }
 // --- koniec lokálnych odpovedí ---
+
 
 
 
