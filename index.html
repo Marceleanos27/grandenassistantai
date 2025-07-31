@@ -208,6 +208,9 @@ let localReply = null;
 if (
   lowerMessage.includes("cena") ||
   lowerMessage.includes("koľko stojí") ||
+  lowerMessage.includes("kolko stoji") ||
+  lowerMessage.includes("koľko stoji") ||
+  lowerMessage.includes("kolko stojí") ||
   lowerMessage.includes("aká je cena") ||
   lowerMessage.includes("cenník") ||
   lowerMessage.includes("cennik") ||
@@ -229,6 +232,8 @@ if (
   lowerMessage.includes("tvoj kontakt") ||
   lowerMessage.includes("email") ||
   lowerMessage.includes("e-mail") ||
+  lowerMessage.includes("mail") ||
+  lowerMessage.includes("gmail") ||
   lowerMessage.includes("číselko")
 ) {
   const k = window.grandenData.kontakty;
@@ -239,6 +244,7 @@ if (
   lowerMessage.includes("kde ste") ||
   lowerMessage.includes("sídli") ||
   lowerMessage.includes("sidli") ||
+  lowerMessage.includes("kde sa nachádza") ||
   lowerMessage.includes("kde sa nachádza") ||
   lowerMessage.includes("lokácia") ||
   lowerMessage.includes("mapa")
@@ -251,6 +257,7 @@ if (
   lowerMessage.includes("kedy vznikla") ||
   lowerMessage.includes("rok vzniku") ||
   lowerMessage.includes("história firmy")
+  lowerMessage.includes("historia firmy")
 ) {
   localReply = `Firma Granden bola založená v roku ${window.grandenData.zalozena}.`;
 
@@ -268,6 +275,7 @@ if (
   lowerMessage.includes("pobočka") ||
   lowerMessage.includes("pobocka") ||
   lowerMessage.includes("najbližšia pobočka") ||
+  lowerMessage.includes("najblizsia pobocka") ||
   lowerMessage.includes("predajna") ||
   lowerMessage.includes("pobočky")
 ) {
@@ -278,9 +286,14 @@ if (
 
 } else if (
   lowerMessage.includes("pracovné hodiny") ||
+  lowerMessage.includes("pracovne hodiny") ||
   lowerMessage.includes("otvorené") ||
+  lowerMessage.includes("otvorene") ||
   lowerMessage.includes("kedy môžem prísť") ||
+  lowerMessage.includes("kedy mozem prist") ||
   lowerMessage.includes("otváracie hodiny") ||
+  lowerMessage.includes("otvaracie hodiny") ||
+  lowerMessage.includes("kedy mate otvorene") ||
   lowerMessage.includes("kedy máte otvorené")
 ) {
   const h = window.grandenData.pracovne_hodiny;
@@ -292,6 +305,7 @@ if (
 } else if (
   lowerMessage.includes("partner") ||
   lowerMessage.includes("spolupráca") ||
+  lowerMessage.includes("spolupraca") ||
   lowerMessage.includes("partneri") ||
   lowerMessage.includes("s kým spolupracujete")
 ) {
@@ -300,7 +314,9 @@ if (
 } else if (
   lowerMessage.includes("popis") ||
   lowerMessage.includes("čo robí") ||
+  lowerMessage.includes("co robi") ||
   lowerMessage.includes("zaoberá") ||
+  lowerMessage.includes("zaobera") ||
   lowerMessage.includes("funkcia") ||
   lowerMessage.includes("profil firmy")
 ) {
@@ -309,6 +325,7 @@ if (
 } else if (
   lowerMessage.includes("filozofia") ||
   lowerMessage.includes("vízia") ||
+  lowerMessage.includes("vizia") ||
   lowerMessage.includes("hodnoty") ||
   lowerMessage.includes("poslanie")
 ) {
@@ -318,7 +335,9 @@ if (
   lowerMessage.includes("udržateľnosť") ||
   lowerMessage.includes("udrzatelnost") ||
   lowerMessage.includes("ekologické") ||
+  lowerMessage.includes("ekologicke") ||
   lowerMessage.includes("zelené") ||
+  lowerMessage.includes("zelene") ||
   lowerMessage.includes("CSR")
 ) {
   const u = window.grandenData.udrzatelnost || window.grandenData["udržateľnosť"];
@@ -339,7 +358,9 @@ if (
 } else if (
   lowerMessage.includes("r&d") ||
   lowerMessage.includes("výskum") ||
+  lowerMessage.includes("vyskum") ||
   lowerMessage.includes("vývoj") ||
+   lowerMessage.includes("vyvoj") ||
   lowerMessage.includes("r and d")
 ) {
   localReply = window.grandenData.r_and_d
