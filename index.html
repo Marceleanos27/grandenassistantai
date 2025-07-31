@@ -379,7 +379,7 @@ if (localReply) {
     const reply = data.choices?.[0]?.message?.content?.trim() || "Prepáč, neviem na to odpovedať.";
 
     removeLastBotMessage();
-    appendMessage("George", reply, "bot");
+    appendMessage("GRANDEN", reply, "bot");
     chatHistory.push({ role: "assistant", content: reply });
 
     // Detekuj záujem o rezerváciu v pôvodnej správe alebo odpovedi
@@ -398,13 +398,13 @@ if (localReply) {
       bookingStep = 1;
       bookingData = {};
       await delay(500);
-      appendMessage("George", "👤 Napíš mi svoje meno.", "bot");
+      appendMessage("GRANDEN", "👤 Napíš mi svoje meno.", "bot");
     }
 
   } catch (error) {
     console.error("Chyba:", error);
     removeLastBotMessage();
-    appendMessage("George", `Ups, nastala chyba: ${error.message}`, "bot");
+    appendMessage("GRANDEN", `Ups, nastala chyba: ${error.message}`, "bot");
 
   }
 }
@@ -415,22 +415,22 @@ async function handleBookingStep(message) {
     case 1:
       bookingData.name = message;
       bookingStep++;
-      appendMessage("George", " 🗓️ Kedy chceš rezervovať termín? (napr. 2025-08-10)", "bot");
+      appendMessage("GRANDEN", " 🗓️ Kedy chceš rezervovať termín? (napr. 2025-08-10)", "bot");
       break;
     case 2:
       bookingData.date = message;
       bookingStep++;
-      appendMessage("George",   "🕓O koľkej hodine? (napr. 14:00)", "bot");
+      appendMessage("GRANDEN",   "🕓O koľkej hodine? (napr. 14:00)", "bot");
       break;
     case 3:
       bookingData.time = message;
       bookingStep++;
-      appendMessage("George", "💼 Akú službu chceš rezervovať?", "bot");
+      appendMessage("GRANDEN", "💼 Akú službu chceš rezervovať?", "bot");
       break;
        case 4:
       bookingData.service = message;
       bookingStep++;
-      appendMessage("George", "📧 Môžeš mi napísať svoj e-mail? (napr. meno@gmail.com)", "bot");
+      appendMessage("GRANDEN", "📧 Môžeš mi napísať svoj e-mail? (napr. meno@gmail.com)", "bot");
       break;
     case 5:
       bookingData.email = message;
@@ -454,14 +454,14 @@ async function sendBookingToWebhook(data) {
     });
 
     if (res.ok) {
-      appendMessage("George", `✅ Tvoj termín na google meet bol úspešne rezervovaný,stačí kliknút len na link v maily. Dátum rezervácie: ${data.date} o ${data.time}.`, "bot");
+      appendMessage("GRANDEN", `✅ Tvoj termín na google meet bol úspešne rezervovaný,stačí kliknút len na link v maily. Dátum rezervácie: ${data.date} o ${data.time}.`, "bot");
 
     } else {
-      appendMessage("George", "❌ Nepodarilo sa rezervovať termín. Skús to prosím znova.", "bot");
+      appendMessage("GRANDEN", "❌ Nepodarilo sa rezervovať termín. Skús to prosím znova.", "bot");
     }
   } catch (err) {
     console.error("Chyba pri odosielaní do n8n:", err);
-    appendMessage("George", "❌ Nastala technická chyba. Skús to neskôr.", "bot");
+    appendMessage("GRANDEN", "❌ Nastala technická chyba. Skús to neskôr.", "bot");
   }
 }
 
@@ -490,22 +490,22 @@ async function sendBookingToWebhook(data) {
 async function startAppointmentBooking() {
   bookingStep = 1;
   bookingData = {};
-  appendMessage("George", "📝 Prosím, napíš svoje meno:", "bot");
+  appendMessage("GRANDEN", "📝 Prosím, napíš svoje meno:", "bot");
 }
 
 async function handleBookingAnswer(answer) {
   if (bookingStep === 1) {
     bookingData.name = answer;
     bookingStep = 2;
-    appendMessage("George", "Na ktorý dátum chceš rezervovať termín? (napr. 2025-08-10)", "bot");
+    appendMessage("GRANDEN", "Na ktorý dátum chceš rezervovať termín? (napr. 2025-08-10)", "bot");
   } else if (bookingStep === 2) {
     bookingData.date = answer;
     bookingStep = 3;
-    appendMessage("George", "Na ktorý čas? (napr. 14:00)", "bot");
+    appendMessage("GRANDEN", "Na ktorý čas? (napr. 14:00)", "bot");
   } else if (bookingStep === 3) {
     bookingData.time = answer;
     bookingStep = 4;
-    appendMessage("George", "Akú službu chceš rezervovať?", "bot");
+    appendMessage("GRANDEN", "Akú službu chceš rezervovať?", "bot");
   } else if (bookingStep === 4) {
     bookingData.service = answer;
     bookingStep = 0; // koniec zbierania
@@ -521,14 +521,14 @@ async function handleBookingAnswer(answer) {
       });
 
       if (res.ok) {
-       appendMessage("George", `✅ Tvoj termín na google meet bol úspešne rezervovaný,stačí kliknút len na link v maily. Dátum rezervácie:  ${bookingData.date} o ${bookingData.time}.`, "bot");
+       appendMessage("GRANDEN", `✅ Tvoj termín na google meet bol úspešne rezervovaný,stačí kliknút len na link v maily. Dátum rezervácie:  ${bookingData.date} o ${bookingData.time}.`, "bot");
 
       } else {
-        appendMessage("George", "❌ Nepodarilo sa rezervovať termín. Skús to prosím znova.", "bot");
+        appendMessage("GRANDEN", "❌ Nepodarilo sa rezervovať termín. Skús to prosím znova.", "bot");
       }
     } catch (err) {
       console.error("Chyba pri odosielaní do n8n:", err);
-      appendMessage("George", "❌ Nastala technická chyba. Skús to neskôr.", "bot");
+      appendMessage("GRANDEN", "❌ Nastala technická chyba. Skús to neskôr.", "bot");
     }
   }
 }
