@@ -205,47 +205,99 @@ const lowerMessage = message.toLowerCase();
 let localReply = null;
 
 // --- LOKÁLNE ODPOVEDE Z database.js ---
+// --- LOKÁLNE ODPOVEDE Z database.js ---
 if (lowerMessage.includes("cena") || lowerMessage.includes("koľko stojí")) {
   const sluzby = window.grandenData.sluzby
     .map(s => `• ${s.nazov}: ${s.cena}`)
     .join("\n");
   localReply = `Naše služby:\n${sluzby}`;
 
-} else if (lowerMessage.includes("kontakt") || lowerMessage.includes("telefón") || lowerMessage.includes("telefon")) || lowerMessage.includes("tvoje telefónne cislo")) || lowerMessage.includes("tvoje čislo")) {
+} else if (
+  lowerMessage.includes("kontakt") ||
+  lowerMessage.includes("telefón") ||
+  lowerMessage.includes("telefon") ||
+  lowerMessage.includes("tvoje telefónne číslo") ||
+  lowerMessage.includes("tvoje číslo")
+) {
   const k = window.grandenData.kontakty;
   localReply = `Kontakt:\n📞 ${k.telefon}\n📧 ${k.email}\n🌐 ${k.web}`;
 
-} else if (lowerMessage.includes("adresa") || lowerMessage.includes("kde ste") || lowerMessage.includes("sídli")) || lowerMessage.includes("kde sa nachádza")){
+} else if (
+  lowerMessage.includes("adresa") ||
+  lowerMessage.includes("kde ste") ||
+  lowerMessage.includes("sídli") ||
+  lowerMessage.includes("kde sa nachádza")
+) {
   localReply = `Sídlime na:\n${window.grandenData.sidlo}`;
 
-} else if (lowerMessage.includes("založená") || lowerMessage.includes("zalozena") || lowerMessage.includes("kedy vznikla")) || lowerMessage.includes("rok vzniku")){
+} else if (
+  lowerMessage.includes("založená") ||
+  lowerMessage.includes("zalozena") ||
+  lowerMessage.includes("kedy vznikla") ||
+  lowerMessage.includes("rok vzniku")
+) {
   localReply = `Granden bola založená v roku ${window.grandenData.zalozena}.`;
 
-} else if (lowerMessage.includes("zakladateľ") || lowerMessage.includes("zakladatel")) || lowerMessage.includes("kto zalozil")){
+} else if (
+  lowerMessage.includes("zakladateľ") ||
+  lowerMessage.includes("zakladatel") ||
+  lowerMessage.includes("kto založil")
+) {
   localReply = `Zakladatelia: ${window.grandenData.zakladatelia.join(", ")}.`;
 
-} else if (lowerMessage.includes("pobočka") || lowerMessage.includes("pobocka")) || lowerMessage.includes("najblizsia pobocka")) || lowerMessage.includes("predajna")){
+} else if (
+  lowerMessage.includes("pobočka") ||
+  lowerMessage.includes("pobocka") ||
+  lowerMessage.includes("najbližšia pobočka") ||
+  lowerMessage.includes("predajna")
+) {
   const p = window.grandenData.pobočky
     .map(x => `• ${x.mesto}: ${x.adresa}`)
     .join("\n");
   localReply = `Naše pobočky:\n${p}`;
 
-} else if (lowerMessage.includes("pracovné hodiny") || lowerMessage.includes("otvorené")) || lowerMessage.includes("kedy mozem prist")) || lowerMessage.includes("otvaracie hodiny")){
+} else if (
+  lowerMessage.includes("pracovné hodiny") ||
+  lowerMessage.includes("otvorené") ||
+  lowerMessage.includes("kedy môžem prísť") ||
+  lowerMessage.includes("otváracie hodiny")
+) {
   const h = window.grandenData.pracovne_hodiny;
   localReply = Object
     .entries(h)
     .map(([den, cas]) => `${den.charAt(0).toUpperCase()+den.slice(1)}: ${cas}`)
     .join("\n");
 
-} else if (lowerMessage.includes("partner") || lowerMessage.includes("spolupráca")) || lowerMessage.includes("partnery")){
+} else if (
+  lowerMessage.includes("partner") ||
+  lowerMessage.includes("spolupráca") ||
+  lowerMessage.includes("partneri")
+) {
   localReply = `Partneri:\n• ${window.grandenData.partnerstvá.join("\n• ")}`;
 
-} else if (lowerMessage.includes("popis") || lowerMessage.includes("čo robí") || lowerMessage.includes("zaoberá")) || lowerMessage.includes("funkcia")) {
+} else if (
+  lowerMessage.includes("popis") ||
+  lowerMessage.includes("čo robí") ||
+  lowerMessage.includes("zaoberá") ||
+  lowerMessage.includes("funkcia")
+) {
   localReply = window.grandenData.popis;
 
-} else if (lowerMessage.includes("filozofi") || lowerMessage.includes("vízia")) {
+} else if (
+  lowerMessage.includes("filozofi") ||
+  lowerMessage.includes("vízia")
+) {
   localReply = window.grandenData.filozofia;
 }
+
+if (localReply) {
+  removeLastBotMessage();
+  appendMessage("George", localReply, "bot");
+  chatHistory.push({ role: "assistant", content: localReply });
+  return;
+}
+// --- koniec lokálnych odpovedí ---
+
 
 
 
