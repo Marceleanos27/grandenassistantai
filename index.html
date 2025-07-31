@@ -204,15 +204,16 @@ async function sendMessage() {
 const lowerMessage = message.toLowerCase();
 let localReply = null;
 
-// --- LOKÁLNE ODPOVEDE Z database.js ---
-// --- LOKÁLNE ODPOVEDE Z database.js ---
-// --- LOKÁLNE ODPOVEDE Z database.js (rozšírené varianty) ---
+// --- LOKÁLNE ODPOVEDE Z database.js (maximálne pokrytie variantov) ---
 if (
   lowerMessage.includes("cena") ||
   lowerMessage.includes("koľko stojí") ||
   lowerMessage.includes("aká je cena") ||
   lowerMessage.includes("cenník") ||
   lowerMessage.includes("ceny")
+  lowerMessage.includes("sluzba")
+  lowerMessage.includes("sluzby")
+  lowerMessage.includes("ponuka sluzieb")
 ) {
   const sluzby = window.grandenData.sluzby
     .map(s => `• ${s.nazov}: ${s.cena}`)
@@ -226,7 +227,8 @@ if (
   lowerMessage.includes("tvoje číslo") ||
   lowerMessage.includes("tvoj kontakt") ||
   lowerMessage.includes("email") ||
-  lowerMessage.includes("e-mail")
+  lowerMessage.includes("e-mail") ||
+  lowerMessage.includes("číselko")
 ) {
   const k = window.grandenData.kontakty;
   localReply = `Kontakt na nás:\n📞 ${k.telefon}\n📧 ${k.email}\n🌐 ${k.web}`;
@@ -236,7 +238,8 @@ if (
   lowerMessage.includes("kde ste") ||
   lowerMessage.includes("sídli") ||
   lowerMessage.includes("kde sa nachádza") ||
-  lowerMessage.includes("lokácia")
+  lowerMessage.includes("lokácia") ||
+  lowerMessage.includes("mapa")
 ) {
   localReply = `Naša adresa je:\n${window.grandenData.sidlo}`;
 
@@ -294,6 +297,7 @@ if (
   lowerMessage.includes("popis") ||
   lowerMessage.includes("čo robí") ||
   lowerMessage.includes("zaoberá") ||
+  lowerMessage.includes("funkcia") ||
   lowerMessage.includes("profil firmy")
 ) {
   localReply = window.grandenData.popis;
@@ -310,7 +314,8 @@ if (
   lowerMessage.includes("udržateľnosť") ||
   lowerMessage.includes("udrzatelnost") ||
   lowerMessage.includes("ekologické") ||
-  lowerMessage.includes("zelené iniciatívy")
+  lowerMessage.includes("zelené") ||
+  lowerMessage.includes("CSR")
 ) {
   const u = window.grandenData.udrzatelnost || window.grandenData["udržateľnosť"];
   localReply = `Opatrenia udržateľnosti:\n• ${u.opatrenia.join("\n• ")}`;
@@ -318,7 +323,8 @@ if (
 } else if (
   lowerMessage.includes("počet zamestnancov") ||
   lowerMessage.includes("zamestnancov") ||
-  lowerMessage.includes("koľko vás je")
+  lowerMessage.includes("koľko vás je") ||
+  lowerMessage.includes("koľko zamestnancov")
 ) {
   localReply = `Momentálne máme ${window.grandenData.pocet_zamestnancov} zamestnancov.`;
 
@@ -336,13 +342,11 @@ if (
 
 if (localReply) {
   removeLastBotMessage();
-  appendMessage("George", localReply, "bot");
+  appendMessage("GRANDEN", localReply, "bot");
   chatHistory.push({ role: "assistant", content: localReply });
   return;
 }
 // --- koniec lokálnych odpovedí ---
-
-
 
 
 
