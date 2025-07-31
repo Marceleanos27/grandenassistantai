@@ -352,15 +352,9 @@ if (localReply) {
 
 
 
-if (localReply) {
-  removeLastBotMessage();
-  appendMessage("George", localReply, "bot");
-  chatHistory.push({ role: "assistant", content: localReply });
-  return;
-}
 
   
-  appendMessage("George", "Píšem odpoveď...", "bot", true);
+  appendMessage("GRANDEN", "Píšem odpoveď...", "bot", true);
 
   try {
     await delay(800);
