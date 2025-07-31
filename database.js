@@ -5,6 +5,7 @@ window.grandenData = {
   meno: "GRANDEN s.r.o.",
   zalozena: 2003,
   zakladatelia: ["Eva Gránska", "Jozef Kollár"],
+  vykonnyriaditel: ["Ing. Miloš Lehocký"],
   sidlo: "Račianska 123, Bratislava, Slovensko",
   pobočky: [
     { mesto: "Bratislava", adresa: "Račianska 123" },
