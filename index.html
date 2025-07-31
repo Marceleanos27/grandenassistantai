@@ -216,39 +216,40 @@ if (lowerMessage.includes("cena") || lowerMessage.includes("koľko stojí")) {
   localReply = `Kontakt:\n📞 ${k.telefon}\n📧 ${k.email}\n🌐 ${k.web}`;
 
 } else if (lowerMessage.includes("adresa") || lowerMessage.includes("kde ste") || lowerMessage.includes("sídl")) {
-  localReply = `Sídlime na: ${window.grandenData.sidlo}`;
+  localReply = `Sídlime na:\n${window.grandenData.sidlo}`;
 
 } else if (lowerMessage.includes("založená") || lowerMessage.includes("zalozena") || lowerMessage.includes("kedy vznikla")) {
-  localReply = `Granden bola založená v roku ${window.grandenData.zalozena}`;
+  localReply = `Granden bola založená v roku ${window.grandenData.zalozena}.`;
 
-} else if (lowerMessage.includes("zakladatel") || lowerMessage.includes("zakladateľ")) {
-  localReply = `Zakladatelia: ${window.grandenData.zakladatelia.join(", ")}`;
+} else if (lowerMessage.includes("zakladateľ") || lowerMessage.includes("zakladatel")) {
+  localReply = `Zakladatelia: ${window.grandenData.zakladatelia.join(", ")}.`;
 
 } else if (lowerMessage.includes("pobočk") || lowerMessage.includes("pobock")) {
-  const pob = window.grandenData.pobočky
-    .map(p => `• ${p.mesto}: ${p.adresa}`)
+  const p = window.grandenData.pobočky
+    .map(x => `• ${x.mesto}: ${x.adresa}`)
     .join("\n");
-  localReply = `Naše pobočky:\n${pob}`;
+  localReply = `Naše pobočky:\n${p}`;
 
 } else if (lowerMessage.includes("pracovné hodiny") || lowerMessage.includes("otvorené")) {
-  const hours = window.grandenData.pracovne_hodiny;
+  const h = window.grandenData.pracovne_hodiny;
   localReply = Object
-    .entries(hours)
-    .map(([d, h]) => `${d.charAt(0).toUpperCase()+d.slice(1)}: ${h}`)
+    .entries(h)
+    .map(([den, cas]) => `${den.charAt(0).toUpperCase()+den.slice(1)}: ${cas}`)
     .join("\n");
 
-} else if (lowerMessage.includes("partnerstv") || lowerMessage.includes("spoluprác")) {
+} else if (lowerMessage.includes("partner") || lowerMessage.includes("spoluprác")) {
   localReply = `Partneri:\n• ${window.grandenData.partnerstvá.join("\n• ")}`;
 
-} else if (lowerMessage.includes("popis") || lowerMessage.includes("čo robí") || lowerMessage.includes("čím sa zaoberá")) {
+} else if (lowerMessage.includes("popis") || lowerMessage.includes("čo robí") || lowerMessage.includes("zaoberá")) {
   localReply = window.grandenData.popis;
 
 } else if (lowerMessage.includes("filozofi") || lowerMessage.includes("vízia")) {
   localReply = window.grandenData.filozofia;
 
 } else if (lowerMessage.includes("udržateľnosť") || lowerMessage.includes("ekolog")) {
-  localReply = `Opatrenia udržateľnosti:\n• ${window.grandenData.udž̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌```
-::contentReference[oaicite:0]{index=0}
+  localReply = `Opatrenia udržateľnosti:\n• ${window.grandenData.údž̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌̌		
+}
+
 
 
 if (localReply) {
