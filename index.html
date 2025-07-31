@@ -159,6 +159,7 @@
 
 
   
+<script src="database.js"></script>
 
   <script>
     let chatHistory = [
@@ -199,6 +200,27 @@ async function sendMessage() {
   }
 
   chatHistory.push({ role: "user", content: message });
+
+const lowerMessage = message.toLowerCase();
+let localReply = null;
+
+if (lowerMessage.includes("cena") || lowerMessage.includes("koľko stojí")) {
+  const sluzby = grandenData.sluzby.map(s => `• ${s.nazov}: ${s.cena}`).join("\n");
+  localReply = `Tu sú naše služby:\n${sluzby}`;
+} else if (lowerMessage.includes("kontakt")) {
+  localReply = `Kontakt:\n📞 ${grandenData.kontakt.telefon}\n📧 ${grandenData.kontakt.email}`;
+} else if (lowerMessage.includes("adresa") || lowerMessage.includes("kde ste")) {
+  localReply = `🗺️ Naša adresa: ${grandenData.adresa}`;
+}
+
+if (localReply) {
+  removeLastBotMessage();
+  appendMessage("George", localReply, "bot");
+  chatHistory.push({ role: "assistant", content: localReply });
+  return;
+}
+
+  
   appendMessage("George", "Píšem odpoveď...", "bot", true);
 
   try {
