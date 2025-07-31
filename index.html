@@ -275,6 +275,14 @@ if (
   localReply = `Zakladatelia: ${window.grandenData.zakladatelia.join(", ")}.`;
 
 } else if (
+  lowerMessage.includes("výkonny riaditel") ||
+  lowerMessage.includes("výkonny riaditeľ") ||
+  lowerMessage.includes("vykonny riaditel") ||
+  lowerMessage.includes("riaditel")
+) {
+  localReply = `Výkonný riaďiteľ ${window.grandenData.vykonnyriaditel.join(", ")}.`;  
+
+} else if (
   lowerMessage.includes("pobočka") ||
   lowerMessage.includes("pobocka") ||
   lowerMessage.includes("najbližšia pobočka") ||
