@@ -9,7 +9,8 @@ window.grandenData = {
   sidlo: "Račianska 123, Bratislava, Slovensko",
   pobočky: [
     { mesto: "Bratislava", adresa: "Račianska 123" },
-    { mesto: "Praha", adresa: "Vinohradská 45" }
+    { mesto: "Praha", adresa: "Vinohradská 45" },
+    { mesto: "Nitra", adresa: "Mostná 60" }
   ],
   segmenty: ["Neživotné poistenie", "Firemné riziká", "Privátne poistenie"],
   popis: "Nezávislý poisťovací maklér pôsobiaci na trhu SR a ČR, špecializovaný na audit zmlúv, monitoring poistného trhu a likvidáciu poistných udalostí.",
