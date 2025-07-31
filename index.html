@@ -204,6 +204,50 @@ async function sendMessage() {
 const lowerMessage = message.toLowerCase();
 let localReply = null;
 
+const sluzbyNazvy = window.grandenData.sluzby.map(s => s.nazov.toLowerCase());
+const klucoveSluzby = [
+  // Audit poistných zmlúv
+  "audit poistných zmlúv",
+  "audit poistných zmluv",
+  "audit zmlúv",
+  "kontrola poistných zmlúv",
+
+  // Monitoring poistného trhu
+  "monitoring poistného trhu",
+  "monitoring poistného trhu",
+  "sledovanie poistného trhu",
+  "monitoring trhu",
+
+  // 24/7 asistencia osobného makléra
+  "24/7 asistencia",
+  "asistencia osobného makléra",
+  "asistencia makléra",
+  "nonstop asistencia",
+
+  // Likvidácia poistných udalostí
+  "likvidácia poistných udalostí",
+  "likvidácia udalostí",
+  "vybavenie poistných udalostí",
+  "vybavenie udalosti",
+
+  // Všeobecné poisťovacie služby
+  "nezávislý poisťovací maklér",
+  "poisťovací maklér",
+  "správa zmlúv",
+  "poistné služby",
+
+  // Monitoring a poradenstvo
+  "monitoring poistného trhu",
+  "poradenstvo v poistení",
+  "audit zmlúv",
+
+  // Asistencia
+  "24/7 asistencia",
+  "asistenčné služby",
+  "klientská asistencia"
+];
+
+  
 // --- LOKÁLNE ODPOVEDE Z database.js (maximálne pokrytie variantov) ---
 if (
   lowerMessage.includes("cena") ||
@@ -379,8 +423,13 @@ if (
     ? "Áno, máme interné oddelenie výskumu a vývoja."
     : "Nie, zameriavame sa na sprostredkovateľskú činnosť, nemáme samostatné R&D.";
 
+} else if (
+  !klucoveSluzby.some(slovo => lowerMessage.includes(slovo)) &&
+  !sluzbyNazvy.some(sluzba => lowerMessage.includes(sluzba))
+) {
+  localReply = "Prepáčte, ale túto službu neposkytujeme. Radi vám však pomôžeme s inými požiadavkami.";
 }
-
+  
 if (localReply) {
   removeLastBotMessage();
   appendMessage("GRANDEN", localReply, "bot");
