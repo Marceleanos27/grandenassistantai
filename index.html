@@ -219,9 +219,17 @@ if (
   lowerMessage.includes("ponuka sluzieb")
 ) {
   const sluzby = window.grandenData.sluzby
-    .map(s => `• ${s.nazov}: ${s.cena}`)
-    .join("\n");
-  localReply = `Naše služby a ich ceny:\n${sluzby}`;
+    .map((s, i) => {
+      // ak máš v databáze pridaný s.link, použije sa ten,
+      // inak fallback na demo link s indexom
+      const link = s.link || `https://www.granden.sk/sluzba-${i+1}`;
+      return `• <a href="${link}" target="_blank">${s.nazov}</a>: ${s.cena}`;
+    })
+    .join("<br>");
+  
+  localReply = `Naše služby a ich ceny:<br>${sluzby}`;
+}
+
 
 } else if (
   lowerMessage.includes("kontakt") ||
@@ -465,3 +473,4 @@ if (localReply) {
   </script>
 </body>
 </html>
+
