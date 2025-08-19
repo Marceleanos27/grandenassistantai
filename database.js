@@ -37,7 +37,7 @@ window.grandenData = {
     }
   ],
   kontakty: {
-    web: "https://www.granden.sk",
+    web: https://www.granden.sk,
     email: "info@granden.sk",
     telefon: "+421 2 4363 1234",
     facebook: "https://www.facebook.com/granden",
