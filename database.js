@@ -42,6 +42,7 @@ window.grandenData = {
     telefon: "+421 2 4363 1234",
     facebook: "https://www.facebook.com/granden",
     linkedin: "https://www.linkedin.com/company/granden"
+  
   },
   pracovne_hodiny: {
     pondelok: "8:00–17:00",
@@ -52,6 +53,12 @@ window.grandenData = {
     sobota: "zatvorené",
     nedela: "zatvorené"
   },
+
+   booking: {
+    calendly: "https://calendly.com/aipoweragency/new-meeting",
+   
+  },
+  
   partnerstvá: [
     "Slovenský olympijský športový výbor",
     "Mestská športová akadémia Bratislava"
