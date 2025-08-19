@@ -373,6 +373,20 @@ if (
   localReply = `Momentálne máme ${window.grandenData.pocet_zamestnancov} zamestnancov.`;
 
 } else if (
+  lowerMessage.includes("stretnutie") ||
+  lowerMessage.includes("meeting") ||
+  lowerMessage.includes("rezervacia") ||
+  lowerMessage.includes("rezervácia") ||
+  lowerMessage.includes("calendly") ||
+  lowerMessage.includes("zavolat si") ||
+  lowerMessage.includes("book") ||
+  lowerMessage.includes("objednat") ||
+  lowerMessage.includes("objednať")
+) {
+  const link = window.grandenData.booking.calendly;
+  localReply = `Tu si môžeš rezervovať stretnutie: <a href="${link}" target="_blank">Rezervovať cez Calendly</a>`;
+  
+} else if (
   lowerMessage.includes("r&d") ||
   lowerMessage.includes("výskum") ||
   lowerMessage.includes("vyskum") ||
@@ -469,6 +483,7 @@ if (localReply) {
   </script>
 </body>
 </html>
+
 
 
 
