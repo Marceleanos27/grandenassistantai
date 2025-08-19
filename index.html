@@ -166,8 +166,6 @@
       {
         role: "system",
         content: "Si skúsený a empatický AI asistent firmy GRANDEN. FIRMA GRANDEN POSKYTUJE LEN TÝCHTO 5 SLUŽIEB: 1. Audit poistných zmlúv, 2. Monitoring poistného trhu, 3. 24/7 asistencia osobného makléra, 4. Likvidácia poistných udalostí, 5. Poradenstvo a sprostredkovanie poistenia. Ak používateľ položí otázku týkajúcu sa jednej z týchto služieb, odpovedaj stručne a profesionálne podľa dopytu. Ak používateľ položí otázku o službe, ktorú neposkytujeme, odpovedz: Prepáčte, ale túto službu neposkytujeme. Radi vám však pomôžeme s inými požiadavkami. Na všetky ostatné otázky, napríklad o pobočkách, dostupnosti, pozdravy alebo všeobecné témy odpovedaj neutrálne a priateľsky, nikdy nehovor, že si AI, odpovedaj vždy jednou alebo dvoma vetami.."
-
-
       }
     ];
 
@@ -185,9 +183,6 @@
       return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-   let bookingStep = 0;
-let bookingData = {};
-
 async function sendMessage() {
   const message = inputField.value.trim();
   if (!message) return;
@@ -195,212 +190,183 @@ async function sendMessage() {
   appendMessage("Ty", message, "user");
   inputField.value = "";
 
-  // Ak sme v procese rezervácie, pokračuj v zbieraní dát
-  if (bookingStep > 0) {
-    await handleBookingStep(message);
+  chatHistory.push({ role: "user", content: message });
+
+  const lowerMessage = message.toLowerCase();
+  let localReply = null;
+
+  // --- LOKÁLNE ODPOVEDE Z database.js ---
+  if (
+    lowerMessage.includes("cena") ||
+    lowerMessage.includes("koľko stojí") ||
+    lowerMessage.includes("kolko stoji") ||
+    lowerMessage.includes("koľko stoji") ||
+    lowerMessage.includes("kolko stojí") ||
+    lowerMessage.includes("aká je cena") ||
+    lowerMessage.includes("cenník") ||
+    lowerMessage.includes("cennik") ||
+    lowerMessage.includes("ceny") ||
+    lowerMessage.includes("sluzba") ||
+    lowerMessage.includes("sluzby") ||
+    lowerMessage.includes("ponuka sluzieb")
+  ) {
+    const sluzby = window.grandenData.sluzby
+      .map(s => `• ${s.nazov}: ${s.cena}`)
+      .join("\n");
+    localReply = `Naše služby a ich ceny:\n${sluzby}`;
+  } else if (
+    lowerMessage.includes("kontakt") ||
+    lowerMessage.includes("telefón") ||
+    lowerMessage.includes("telefon") ||
+    lowerMessage.includes("tvoje číslo") ||
+    lowerMessage.includes("tvoj kontakt") ||
+    lowerMessage.includes("email") ||
+    lowerMessage.includes("e-mail") ||
+    lowerMessage.includes("mail") ||
+    lowerMessage.includes("gmail") ||
+    lowerMessage.includes("číselko")
+  ) {
+    const k = window.grandenData.kontakty;
+    localReply = `Kontakt na nás:\n📞 ${k.telefon}\n📧 ${k.email}\n🌐 ${k.web}`;
+  } else if (
+    lowerMessage.includes("adresa") ||
+    lowerMessage.includes("kde ste") ||
+    lowerMessage.includes("sídli") ||
+    lowerMessage.includes("sidli") ||
+    lowerMessage.includes("kde sa nachádza") ||
+    lowerMessage.includes("kde vas najdem") ||
+    lowerMessage.includes("kde vas nájdem") ||
+    lowerMessage.includes("kde sa nachádza") ||
+    lowerMessage.includes("lokácia") ||
+    lowerMessage.includes("mapa")
+  ) {
+    localReply = `Naša hlavná adresa je:\n${window.grandenData.sidlo}`;
+  } else if (
+    lowerMessage.includes("založená") ||
+    lowerMessage.includes("zalozena") ||
+    lowerMessage.includes("kedy vznikla") ||
+    lowerMessage.includes("rok vzniku") ||
+    lowerMessage.includes("história firmy") ||
+    lowerMessage.includes("historia firmy")
+  ) {
+    localReply = `Firma Granden bola založená v roku ${window.grandenData.zalozena}.`;
+  } else if (
+    lowerMessage.includes("konatel") ||
+    lowerMessage.includes("konateľ") ||
+    lowerMessage.includes("konatelia") ||
+    lowerMessage.includes("zakladateľ") ||
+    lowerMessage.includes("zakladatel") ||
+    lowerMessage.includes("kto založil") ||
+    lowerMessage.includes("kto zalozil") ||
+    lowerMessage.includes("kto ju zalozil") ||
+    lowerMessage.includes("founder")
+  ) {
+    localReply = `Zakladatelia: ${window.grandenData.zakladatelia.join(", ")}.`;
+  } else if (
+    lowerMessage.includes("výkonny riaditel") ||
+    lowerMessage.includes("výkonny riaditeľ") ||
+    lowerMessage.includes("vykonny riaditel") ||
+    lowerMessage.includes("riaditel")
+  ) {
+    localReply = `Výkonný riaďiteľ ${window.grandenData.vykonnyriaditel.join(", ")}.`;  
+  } else if (
+    lowerMessage.includes("pobočka") ||
+    lowerMessage.includes("pobocka") ||
+    lowerMessage.includes("najbližšia pobočka") ||
+    lowerMessage.includes("najblizsia pobocka") ||
+    lowerMessage.includes("predajna") ||
+    lowerMessage.includes("pobočky")
+  ) {
+    const p = window.grandenData.pobočky
+      .map(x => `• ${x.mesto}: ${x.adresa}`)
+      .join("\n");
+    localReply = `Naše pobočky:\n${p}`;
+  } else if (
+    lowerMessage.includes("pracovné hodiny") ||
+    lowerMessage.includes("pracovne hodiny") ||
+    lowerMessage.includes("otvorené") ||
+    lowerMessage.includes("otvorene") ||
+    lowerMessage.includes("kedy môžem prísť") ||
+    lowerMessage.includes("kedy mozem prist") ||
+    lowerMessage.includes("otváracie hodiny") ||
+    lowerMessage.includes("otvaracie hodiny") ||
+    lowerMessage.includes("kedy mate otvorene") ||
+    lowerMessage.includes("kedy máte otvorené")
+  ) {
+    const h = window.grandenData.pracovne_hodiny;
+    localReply = "Pracovné hodiny:\n" +
+      Object.entries(h)
+        .map(([den, cas]) => `${den.charAt(0).toUpperCase()+den.slice(1)}: ${cas}`)
+        .join("\n");
+  } else if (
+    lowerMessage.includes("partner") ||
+    lowerMessage.includes("spolupráca") ||
+    lowerMessage.includes("spolupraca") ||
+    lowerMessage.includes("partneri") ||
+    lowerMessage.includes("s kým spolupracujete")
+  ) {
+    localReply = `Naši partneri:\n• ${window.grandenData.partnerstvá.join("\n• ")}`;
+  } else if (
+    lowerMessage.includes("popis") ||
+    lowerMessage.includes("čo robí") ||
+    lowerMessage.includes("co robi") ||
+    lowerMessage.includes("zaoberá") ||
+    lowerMessage.includes("zaobera") ||
+    lowerMessage.includes("funkcia") ||
+    lowerMessage.includes("profil firmy")
+  ) {
+    localReply = window.grandenData.popis;
+  } else if (
+    lowerMessage.includes("filozofia") ||
+    lowerMessage.includes("vízia") ||
+    lowerMessage.includes("vizia") ||
+    lowerMessage.includes("hodnoty") ||
+    lowerMessage.includes("poslanie")
+  ) {
+    localReply = window.grandenData.filozofia;
+  } else if (
+    lowerMessage.includes("udržateľnosť") ||
+    lowerMessage.includes("udrzatelnost") ||
+    lowerMessage.includes("ekologické") ||
+    lowerMessage.includes("ekologicke") ||
+    lowerMessage.includes("zelené") ||
+    lowerMessage.includes("zelene") ||
+    lowerMessage.includes("CSR")
+  ) {
+    const u = window.grandenData.udrzatelnost || window.grandenData["udržateľnosť"];
+    localReply = `Opatrenia udržateľnosti:\n• ${u.opatrenia.join("\n• ")}`;
+  } else if (
+    lowerMessage.includes("počet zamestnancov") ||
+    lowerMessage.includes("pocet zamestnancov") ||
+    lowerMessage.includes("kolko zamestnancov") ||
+    lowerMessage.includes("koľko vás je") ||
+    lowerMessage.includes("kolko vás je") ||
+    lowerMessage.includes("koľko zamestnancov") ||
+    lowerMessage.includes("kolko zamestnancov") ||
+    lowerMessage.includes("kolko mate zamestnancov") ||
+    lowerMessage.includes("koľko mate zamestnancov")
+  ) {
+    localReply = `Momentálne máme ${window.grandenData.pocet_zamestnancov} zamestnancov.`;
+  } else if (
+    lowerMessage.includes("r&d") ||
+    lowerMessage.includes("výskum") ||
+    lowerMessage.includes("vyskum") ||
+    lowerMessage.includes("vývoj") ||
+     lowerMessage.includes("vyvoj") ||
+    lowerMessage.includes("r and d")
+  ) {
+    localReply = window.grandenData.r_and_d
+      ? "Áno, máme interné oddelenie výskumu a vývoja."
+      : "Nie, zameriavame sa na sprostredkovateľskú činnosť, nemáme samostatné R&D.";
+  } 
+  
+  if (localReply) {
+    removeLastBotMessage();
+    appendMessage("GRANDEN", localReply, "bot");
+    chatHistory.push({ role: "assistant", content: localReply });
     return;
   }
 
-  chatHistory.push({ role: "user", content: message });
-
-const lowerMessage = message.toLowerCase();
-let localReply = null;
-
-
-  
-// --- LOKÁLNE ODPOVEDE Z database.js (maximálne pokrytie variantov) ---
-if (
-  lowerMessage.includes("cena") ||
-  lowerMessage.includes("koľko stojí") ||
-  lowerMessage.includes("kolko stoji") ||
-  lowerMessage.includes("koľko stoji") ||
-  lowerMessage.includes("kolko stojí") ||
-  lowerMessage.includes("aká je cena") ||
-  lowerMessage.includes("cenník") ||
-  lowerMessage.includes("cennik") ||
-  lowerMessage.includes("ceny") ||
-  lowerMessage.includes("sluzba") ||
-  lowerMessage.includes("sluzby") ||
-  lowerMessage.includes("ponuka sluzieb")
-) {
-  const sluzby = window.grandenData.sluzby
-    .map(s => `• ${s.nazov}: ${s.cena}`)
-    .join("\n");
-  localReply = `Naše služby a ich ceny:\n${sluzby}`;
-
-} else if (
-  lowerMessage.includes("kontakt") ||
-  lowerMessage.includes("telefón") ||
-  lowerMessage.includes("telefon") ||
-  lowerMessage.includes("tvoje číslo") ||
-  lowerMessage.includes("tvoj kontakt") ||
-  lowerMessage.includes("email") ||
-  lowerMessage.includes("e-mail") ||
-  lowerMessage.includes("mail") ||
-  lowerMessage.includes("gmail") ||
-  lowerMessage.includes("číselko")
-) {
-  const k = window.grandenData.kontakty;
-  localReply = `Kontakt na nás:\n📞 ${k.telefon}\n📧 ${k.email}\n🌐 ${k.web}`;
-
-} else if (
-  lowerMessage.includes("adresa") ||
-  lowerMessage.includes("kde ste") ||
-  lowerMessage.includes("sídli") ||
-  lowerMessage.includes("sidli") ||
-  lowerMessage.includes("kde sa nachádza") ||
-  lowerMessage.includes("kde vas najdem") ||
-  lowerMessage.includes("kde vas nájdem") ||
-  lowerMessage.includes("kde sa nachádza") ||
-  lowerMessage.includes("lokácia") ||
-  lowerMessage.includes("mapa")
-) {
-  localReply = `Naša hlavná adresa je:\n${window.grandenData.sidlo}`;
-
-} else if (
-  lowerMessage.includes("založená") ||
-  lowerMessage.includes("zalozena") ||
-  lowerMessage.includes("kedy vznikla") ||
-  lowerMessage.includes("rok vzniku") ||
-  lowerMessage.includes("história firmy") ||
-  lowerMessage.includes("historia firmy")
-) {
-  localReply = `Firma Granden bola založená v roku ${window.grandenData.zalozena}.`;
-
-} else if (
-  lowerMessage.includes("konatel") ||
-  lowerMessage.includes("konateľ") ||
-  lowerMessage.includes("konatelia") ||
-  lowerMessage.includes("zakladateľ") ||
-  lowerMessage.includes("zakladatel") ||
-  lowerMessage.includes("kto založil") ||
-  lowerMessage.includes("kto zalozil") ||
-  lowerMessage.includes("kto ju zalozil") ||
-  lowerMessage.includes("founder")
-) {
-  localReply = `Zakladatelia: ${window.grandenData.zakladatelia.join(", ")}.`;
-
-} else if (
-  lowerMessage.includes("výkonny riaditel") ||
-  lowerMessage.includes("výkonny riaditeľ") ||
-  lowerMessage.includes("vykonny riaditel") ||
-  lowerMessage.includes("riaditel")
-) {
-  localReply = `Výkonný riaďiteľ ${window.grandenData.vykonnyriaditel.join(", ")}.`;  
-
-} else if (
-  lowerMessage.includes("pobočka") ||
-  lowerMessage.includes("pobocka") ||
-  lowerMessage.includes("najbližšia pobočka") ||
-  lowerMessage.includes("najblizsia pobocka") ||
-  lowerMessage.includes("predajna") ||
-  lowerMessage.includes("pobočky")
-) {
-  const p = window.grandenData.pobočky
-    .map(x => `• ${x.mesto}: ${x.adresa}`)
-    .join("\n");
-  localReply = `Naše pobočky:\n${p}`;
-
-} else if (
-  lowerMessage.includes("pracovné hodiny") ||
-  lowerMessage.includes("pracovne hodiny") ||
-  lowerMessage.includes("otvorené") ||
-  lowerMessage.includes("otvorene") ||
-  lowerMessage.includes("kedy môžem prísť") ||
-  lowerMessage.includes("kedy mozem prist") ||
-  lowerMessage.includes("otváracie hodiny") ||
-  lowerMessage.includes("otvaracie hodiny") ||
-  lowerMessage.includes("kedy mate otvorene") ||
-  lowerMessage.includes("kedy máte otvorené")
-) {
-  const h = window.grandenData.pracovne_hodiny;
-  localReply = "Pracovné hodiny:\n" +
-    Object.entries(h)
-      .map(([den, cas]) => `${den.charAt(0).toUpperCase()+den.slice(1)}: ${cas}`)
-      .join("\n");
-
-} else if (
-  lowerMessage.includes("partner") ||
-  lowerMessage.includes("spolupráca") ||
-  lowerMessage.includes("spolupraca") ||
-  lowerMessage.includes("partneri") ||
-  lowerMessage.includes("s kým spolupracujete")
-) {
-  localReply = `Naši partneri:\n• ${window.grandenData.partnerstvá.join("\n• ")}`;
-
-} else if (
-  lowerMessage.includes("popis") ||
-  lowerMessage.includes("čo robí") ||
-  lowerMessage.includes("co robi") ||
-  lowerMessage.includes("zaoberá") ||
-  lowerMessage.includes("zaobera") ||
-  lowerMessage.includes("funkcia") ||
-  lowerMessage.includes("profil firmy")
-) {
-  localReply = window.grandenData.popis;
-
-} else if (
-  lowerMessage.includes("filozofia") ||
-  lowerMessage.includes("vízia") ||
-  lowerMessage.includes("vizia") ||
-  lowerMessage.includes("hodnoty") ||
-  lowerMessage.includes("poslanie")
-) {
-  localReply = window.grandenData.filozofia;
-
-} else if (
-  lowerMessage.includes("udržateľnosť") ||
-  lowerMessage.includes("udrzatelnost") ||
-  lowerMessage.includes("ekologické") ||
-  lowerMessage.includes("ekologicke") ||
-  lowerMessage.includes("zelené") ||
-  lowerMessage.includes("zelene") ||
-  lowerMessage.includes("CSR")
-) {
-  const u = window.grandenData.udrzatelnost || window.grandenData["udržateľnosť"];
-  localReply = `Opatrenia udržateľnosti:\n• ${u.opatrenia.join("\n• ")}`;
-
-} else if (
-  lowerMessage.includes("počet zamestnancov") ||
-  lowerMessage.includes("pocet zamestnancov") ||
-  lowerMessage.includes("kolko zamestnancov") ||
-  lowerMessage.includes("koľko vás je") ||
-  lowerMessage.includes("kolko vás je") ||
-  lowerMessage.includes("koľko zamestnancov") ||
-  lowerMessage.includes("kolko zamestnancov") ||
-  lowerMessage.includes("kolko mate zamestnancov") ||
-  lowerMessage.includes("koľko mate zamestnancov")
-) {
-  localReply = `Momentálne máme ${window.grandenData.pocet_zamestnancov} zamestnancov.`;
-
-} else if (
-  lowerMessage.includes("r&d") ||
-  lowerMessage.includes("výskum") ||
-  lowerMessage.includes("vyskum") ||
-  lowerMessage.includes("vývoj") ||
-   lowerMessage.includes("vyvoj") ||
-  lowerMessage.includes("r and d")
-) {
-  localReply = window.grandenData.r_and_d
-    ? "Áno, máme interné oddelenie výskumu a vývoja."
-    : "Nie, zameriavame sa na sprostredkovateľskú činnosť, nemáme samostatné R&D.";
-
-} 
-  
-if (localReply) {
-  removeLastBotMessage();
-  appendMessage("GRANDEN", localReply, "bot");
-  chatHistory.push({ role: "assistant", content: localReply });
-  return;
-}
-// --- koniec lokálnych odpovedí ---
-
-
-
-
-
-
-  
   appendMessage("GRANDEN", "Píšem odpoveď...", "bot", true);
 
   try {
@@ -416,7 +382,6 @@ if (localReply) {
 
     if (!response.ok) {
      throw new Error(`Chyba ${response.status}: ${response.statusText}`);
-
     }
 
     const data = await response.json();
@@ -426,89 +391,12 @@ if (localReply) {
     appendMessage("GRANDEN", reply, "bot");
     chatHistory.push({ role: "assistant", content: reply });
 
-    // Detekuj záujem o rezerváciu v pôvodnej správe alebo odpovedi
-    const replyLower = reply.toLowerCase();
-    const messageLower = message.toLowerCase();
-    const wantsAppointment = messageLower.includes("rezervovať") ||
-      messageLower.includes("termín") ||
-      messageLower.includes("stretnutie") ||
-      messageLower.includes("chcem sa objednať") ||
-      replyLower.includes("zadaj údaje") ||
-      replyLower.includes("rezervuj") ||
-      replyLower.includes("zarezervovať") ||
-      replyLower.includes("termín");
-
-    if (wantsAppointment) {
-      bookingStep = 1;
-      bookingData = {};
-      await delay(500);
-      appendMessage("GRANDEN", "👤 Napíš mi svoje meno.", "bot");
-    }
-
   } catch (error) {
     console.error("Chyba:", error);
     removeLastBotMessage();
     appendMessage("GRANDEN", `Ups, nastala chyba: ${error.message}`, "bot");
-
   }
 }
-
-// Funkcia na postupné zbieranie údajov pre rezerváciu
-async function handleBookingStep(message) {
-  switch (bookingStep) {
-    case 1:
-      bookingData.name = message;
-      bookingStep++;
-      appendMessage("GRANDEN", " 🗓️ Kedy chceš rezervovať termín? (napr. 2025-08-10)", "bot");
-      break;
-    case 2:
-      bookingData.date = message;
-      bookingStep++;
-      appendMessage("GRANDEN",   "🕓O koľkej hodine? (napr. 14:00)", "bot");
-      break;
-    case 3:
-      bookingData.time = message;
-      bookingStep++;
-      appendMessage("GRANDEN", "💼 Akú službu chceš rezervovať?", "bot");
-      break;
-       case 4:
-      bookingData.service = message;
-      bookingStep++;
-      appendMessage("GRANDEN", "📧 Môžeš mi napísať svoj e-mail? (napr. meno@gmail.com)", "bot");
-      break;
-    case 5:
-      bookingData.email = message;
-      bookingStep = 0; // rezervácia ukončená
-      await sendBookingToWebhook(bookingData);
-      bookingData = {};
-      break;
-
-  }
-}
-
-// Odoslanie údajov do n8n webhooku
-async function sendBookingToWebhook(data) {
-  try {
-    const res = await fetch("https://marcellehocky1.app.n8n.cloud/webhook/book-appointment", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
-
-    if (res.ok) {
-      appendMessage("GRANDEN", `✅ Tvoj termín na google meet bol úspešne rezervovaný,stačí kliknút len na link v maily. Dátum rezervácie: ${data.date} o ${data.time}.`, "bot");
-
-    } else {
-      appendMessage("GRANDEN", "❌ Nepodarilo sa rezervovať termín. Skús to prosím znova.", "bot");
-    }
-  } catch (err) {
-    console.error("Chyba pri odosielaní do n8n:", err);
-    appendMessage("GRANDEN", "❌ Nastala technická chyba. Skús to neskôr.", "bot");
-  }
-}
-
 
     function appendMessage(sender, message, role, isTemp = false) {
       const msgDiv = document.createElement("div");
@@ -528,55 +416,6 @@ async function sendBookingToWebhook(data) {
       const tempMsg = chatbox.querySelector(".bot.temp");
       if (tempMsg) chatbox.removeChild(tempMsg);
     }
-
-
-
-async function startAppointmentBooking() {
-  bookingStep = 1;
-  bookingData = {};
-  appendMessage("GRANDEN", "📝 Prosím, napíš svoje meno:", "bot");
-}
-
-async function handleBookingAnswer(answer) {
-  if (bookingStep === 1) {
-    bookingData.name = answer;
-    bookingStep = 2;
-    appendMessage("GRANDEN", "Na ktorý dátum chceš rezervovať termín? (napr. 2025-08-10)", "bot");
-  } else if (bookingStep === 2) {
-    bookingData.date = answer;
-    bookingStep = 3;
-    appendMessage("GRANDEN", "Na ktorý čas? (napr. 14:00)", "bot");
-  } else if (bookingStep === 3) {
-    bookingData.time = answer;
-    bookingStep = 4;
-    appendMessage("GRANDEN", "Akú službu chceš rezervovať?", "bot");
-  } else if (bookingStep === 4) {
-    bookingData.service = answer;
-    bookingStep = 0; // koniec zbierania
-
-    // Odošli na webhook
-    try {
-      const res = await fetch("https://marcellehocky1.app.n8n.cloud/webhook/book-appointment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(bookingData)
-      });
-
-      if (res.ok) {
-       appendMessage("GRANDEN", `✅ Tvoj termín na google meet bol úspešne rezervovaný,stačí kliknút len na link v maily. Dátum rezervácie:  ${bookingData.date} o ${bookingData.time}.`, "bot");
-
-      } else {
-        appendMessage("GRANDEN", "❌ Nepodarilo sa rezervovať termín. Skús to prosím znova.", "bot");
-      }
-    } catch (err) {
-      console.error("Chyba pri odosielaní do n8n:", err);
-      appendMessage("GRANDEN", "❌ Nastala technická chyba. Skús to neskôr.", "bot");
-    }
-  }
-}
-
     
   </script>
 </body>
