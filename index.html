@@ -185,8 +185,7 @@
       return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-   let bookingStep = 0;
-let bookingData = {};
+   
 
 async function sendMessage() {
   const message = inputField.value.trim();
@@ -195,11 +194,7 @@ async function sendMessage() {
   appendMessage("Ty", message, "user");
   inputField.value = "";
 
-  // Ak sme v procese rezervácie, pokračuj v zbieraní dát
-  if (bookingStep > 0) {
-    await handleBookingStep(message);
-    return;
-  }
+
 
   chatHistory.push({ role: "user", content: message });
 
@@ -426,18 +421,7 @@ if (localReply) {
     appendMessage("GRANDEN", reply, "bot");
     chatHistory.push({ role: "assistant", content: reply });
 
-    // Detekuj záujem o rezerváciu v pôvodnej správe alebo odpovedi
-    const replyLower = reply.toLowerCase();
-    const messageLower = message.toLowerCase();
-    const wantsAppointment = messageLower.includes("&×ß*ß×") ||
-     
-
-    if (wantsAppointment) {
-      bookingStep = 0;
-      bookingData = {};
-      await delay(500);
-      appendMessage("GRANDEN", "👤 Napíš mi svoje meno.", "bot");
-    }
+   
 
   } catch (error) {
     console.error("Chyba:", error);
@@ -447,61 +431,9 @@ if (localReply) {
   }
 }
 
-// Funkcia na postupné zbieranie údajov pre rezerváciu
-async function handleBookingStep(message) {
-  switch (bookingStep) {
-    case 1:
-      bookingData.name = message;
-      bookingStep++;
-      appendMessage("GRANDEN", " 🗓️ Kedy chceš rezervovať termín? (napr. 2025-08-10)", "bot");
-      break;
-    case 2:
-      bookingData.date = message;
-      bookingStep++;
-      appendMessage("GRANDEN",   "🕓O koľkej hodine? (napr. 14:00)", "bot");
-      break;
-    case 3:
-      bookingData.time = message;
-      bookingStep++;
-      appendMessage("GRANDEN", "💼 Akú službu chceš rezervovať?", "bot");
-      break;
-       case 4:
-      bookingData.service = message;
-      bookingStep++;
-      appendMessage("GRANDEN", "📧 Môžeš mi napísať svoj e-mail? (napr. meno@gmail.com)", "bot");
-      break;
-    case 5:
-      bookingData.email = message;
-      bookingStep = 0; // rezervácia ukončená
-      await sendBookingToWebhook(bookingData);
-      bookingData = {};
-      break;
 
-  }
-}
 
-// Odoslanie údajov do n8n webhooku
-async function sendBookingToWebhook(data) {
-  try {
-    const res = await fetch("https://marcellehocky1.app.n8n.cloud/webhook/book-appointment", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
 
-    if (res.ok) {
-      appendMessage("GRANDEN", `✅ Tvoj termín na google meet bol úspešne rezervovaný,stačí kliknút len na link v maily. Dátum rezervácie: ${data.date} o ${data.time}.`, "bot");
-
-    } else {
-      appendMessage("GRANDEN", "❌ Nepodarilo sa rezervovať termín. Skús to prosím znova.", "bot");
-    }
-  } catch (err) {
-    console.error("Chyba pri odosielaní do n8n:", err);
-    appendMessage("GRANDEN", "❌ Nastala technická chyba. Skús to neskôr.", "bot");
-  }
-}
 
 
     function appendMessage(sender, message, role, isTemp = false) {
@@ -525,55 +457,11 @@ async function sendBookingToWebhook(data) {
 
 
 
-async function startAppointmentBooking() {
-  bookingStep = 1;
-  bookingData = {};
-  appendMessage("GRANDEN", "📝 Prosím, napíš svoje meno:", "bot");
-}
 
-async function handleBookingAnswer(answer) {
-  if (bookingStep === 1) {
-    bookingData.name = answer;
-    bookingStep = 2;
-    appendMessage("GRANDEN", "Na ktorý dátum chceš rezervovať termín? (napr. 2025-08-10)", "bot");
-  } else if (bookingStep === 2) {
-    bookingData.date = answer;
-    bookingStep = 3;
-    appendMessage("GRANDEN", "Na ktorý čas? (napr. 14:00)", "bot");
-  } else if (bookingStep === 3) {
-    bookingData.time = answer;
-    bookingStep = 4;
-    appendMessage("GRANDEN", "Akú službu chceš rezervovať?", "bot");
-  } else if (bookingStep === 4) {
-    bookingData.service = answer;
-    bookingStep = 0; // koniec zbierania
 
-    // Odošli na webhook
-    try {
-      const res = await fetch("https://marcellehocky1.app.n8n.cloud/webhook/book-appointment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(bookingData)
-      });
 
-      if (res.ok) {
-       appendMessage("GRANDEN", `✅ Tvoj termín na google meet bol úspešne rezervovaný,stačí kliknút len na link v maily. Dátum rezervácie:  ${bookingData.date} o ${bookingData.time}.`, "bot");
-
-      } else {
-        appendMessage("GRANDEN", "❌ Nepodarilo sa rezervovať termín. Skús to prosím znova.", "bot");
-      }
-    } catch (err) {
-      console.error("Chyba pri odosielaní do n8n:", err);
-      appendMessage("GRANDEN", "❌ Nastala technická chyba. Skús to neskôr.", "bot");
-    }
-  }
-}
 
     
   </script>
 </body>
 </html>
-
-
