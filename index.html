@@ -426,7 +426,32 @@ if (localReply) {
     appendMessage("GRANDEN", reply, "bot");
     chatHistory.push({ role: "assistant", content: reply });
 
- 
+    // Detekuj záujem o rezerváciu v pôvodnej správe alebo odpovedi
+    const replyLower = reply.toLowerCase();
+    const messageLower = message.toLowerCase();
+    const wantsAppointment = messageLower.includes("rezervovať") ||
+      messageLower.includes("termín") ||
+      messageLower.includes("stretnutie") ||
+      messageLower.includes("chcem sa objednať") ||
+      replyLower.includes("zadaj údaje") ||
+      replyLower.includes("rezervuj") ||
+      replyLower.includes("zarezervovať") ||
+      replyLower.includes("termín");
+
+    if (wantsAppointment) {
+      bookingStep = 1;
+      bookingData = {};
+      await delay(500);
+      appendMessage("GRANDEN", "👤 Napíš mi svoje meno.", "bot");
+    }
+
+  } catch (error) {
+    console.error("Chyba:", error);
+    removeLastBotMessage();
+    appendMessage("GRANDEN", `Ups, nastala chyba: ${error.message}`, "bot");
+
+  }
+}
 
 // Funkcia na postupné zbieranie údajov pre rezerváciu
 async function handleBookingStep(message) {
@@ -556,4 +581,3 @@ async function handleBookingAnswer(answer) {
   </script>
 </body>
 </html>
-
