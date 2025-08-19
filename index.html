@@ -489,7 +489,7 @@ async function handleBookingStep(message) {
 // Odoslanie údajov do n8n webhooku
 async function sendBookingToWebhook(data) {
   try {
-    const res = await fetch("https://marcellehocky1.app.n8n.cloud/webhook/book-appointment", {
+    const res = await fetch("https://lecram.app.n8n.cloud/webhook-test/book-appointment", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -556,7 +556,7 @@ async function handleBookingAnswer(answer) {
 
     // Odošli na webhook
     try {
-      const res = await fetch("https://marcellehocky1.app.n8n.cloud/webhook/book-appointment", {
+      const res = await fetch("https://lecram.app.n8n.cloud/webhook-test/book-appointment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -581,3 +581,4 @@ async function handleBookingAnswer(answer) {
   </script>
 </body>
 </html>
+
