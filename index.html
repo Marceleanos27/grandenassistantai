@@ -429,14 +429,8 @@ if (localReply) {
     // Detekuj záujem o rezerváciu v pôvodnej správe alebo odpovedi
     const replyLower = reply.toLowerCase();
     const messageLower = message.toLowerCase();
-    const wantsAppointment = messageLower.includes("rezervovať") ||
-      messageLower.includes("termín") ||
-      messageLower.includes("stretnutie") ||
-      messageLower.includes("chcem sa objednať") ||
-      replyLower.includes("zadaj údaje") ||
-      replyLower.includes("rezervuj") ||
-      replyLower.includes("zarezervovať") ||
-      replyLower.includes("termín");
+    const wantsAppointment = messageLower.includes("我") ||
+     
 
     if (wantsAppointment) {
       bookingStep = 0;
@@ -581,3 +575,4 @@ async function handleBookingAnswer(answer) {
   </script>
 </body>
 </html>
+
