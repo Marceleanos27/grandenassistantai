@@ -359,7 +359,7 @@ if (
   lowerMessage.includes("CSR")
 ) {
   const u = window.grandenData.udrzatelnost || window.grandenData["udržateľnosť"];
-  localReply = `Opatrenia udržateľnosti:\n• ${u.opatrenia.join("\n• ")}`;
+  localReply = (`Opatrenia udržateľnosti:\n• ${u.opatrenia.join("\n• ")}`;)
   .replace(/\n/g, "<br>");
 
 
@@ -494,6 +494,7 @@ if (localReply) {
   </script>
 </body>
 </html>
+
 
 
 
