@@ -360,6 +360,8 @@ if (
 ) {
   const u = window.grandenData.udrzatelnost || window.grandenData["udržateľnosť"];
   localReply = `Opatrenia udržateľnosti:\n• ${u.opatrenia.join("\n• ")}`;
+  .replace(/\n/g, "<br>");
+
 
 } else if (
   lowerMessage.includes("počet zamestnancov") ||
@@ -492,6 +494,7 @@ if (localReply) {
   </script>
 </body>
 </html>
+
 
 
 
