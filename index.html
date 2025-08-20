@@ -313,10 +313,11 @@ if (
   lowerMessage.includes("kedy máte otvorené")
 ) {
   const h = window.grandenData.pracovne_hodiny;
-  localReply = "Pracovné hodiny:\n" +
-    Object.entries(h)
-      .map(([den, cas]) => `${den.charAt(0).toUpperCase()+den.slice(1)}: ${cas}`)
-      .join("\n");
+ localReply = ("Pracovné hodiny:\n" +
+  Object.entries(h)
+    .map(([den, cas]) => `${den.charAt(0).toUpperCase()+den.slice(1)}: ${cas}`)
+    .join("\n"))
+  .replace(/\n/g, "<br>");
 
 } else if (
   lowerMessage.includes("partner") ||
@@ -489,6 +490,7 @@ if (localReply) {
   </script>
 </body>
 </html>
+
 
 
 
