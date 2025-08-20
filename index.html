@@ -326,7 +326,8 @@ if (
   lowerMessage.includes("partneri") ||
   lowerMessage.includes("s kým spolupracujete")
 ) {
-  localReply = `Naši partneri:\n• ${window.grandenData.partnerstvá.join("\n• ")}`;
+  localReply = `Naši partneri:\n• ${window.grandenData.partnerstvá.join("\n• ")}`.replace(/\n/g, "<br>");
+element.innerHTML = localReply;
 
 } else if (
   lowerMessage.includes("popis") ||
@@ -490,6 +491,7 @@ if (localReply) {
   </script>
 </body>
 </html>
+
 
 
 
