@@ -223,7 +223,7 @@ if (
   const sluzby = window.grandenData.sluzby
     .map(s => `• ${s.nazov}: ${s.cena}`)
     .join("\n");
-  localReply = "Naše služby a ich ceny:" + "\n" + sluzby;
+  localReply = `Naše služby a ich ceny:\n${sluzby}`.replace(/\n/g, "<br>");
 
 
 
@@ -489,6 +489,7 @@ if (localReply) {
   </script>
 </body>
 </html>
+
 
 
 
